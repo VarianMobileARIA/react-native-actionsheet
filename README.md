@@ -1,138 +1,140 @@
 # react-native-actionsheet
-Cross platform ActionSheet. This component implements a custom ActionSheet  and provides the same way to drawing it on the defferent platforms(iOS and Android). Actually, In order to keep the best effect, it still uses the ActionSheetIOS on iOS.
 
-<img height="500" src="./doc/ios.png"> <img height="500" src="./doc/android.png">
+Cross platform ActionSheet. This component implements a custom ActionSheet and provides the same way to drawing it on the defferent platforms(iOS and Android). Actually, In order to keep the best effect, it still uses the ActionSheetIOS on iOS.
 
-# Installation
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top">
+        <img width="210" src="./docs/ios-custom.png">
+      </td>
+      <td align="center" valign="top">
+        <img width="210" src="./docs/ios-native.png">
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+## Install
 
 ```
-npm i react-native-actionsheet --save
+npm install react-native-actionsheet --save
 ```
 
 ## Usage
 
-```javascript
-import React from 'react'
-import { View, Text, StyleSheet, Modal, ListView } from 'react-native'
-import ActionSheet from 'react-native-actionsheet'
+```js
+import ActionSheet from "react-native-actionsheet";
 
-const CANCEL_INDEX = 0
-const DESTRUCTIVE_INDEX = 4
-const options = [ 'Cancel', 'Apple', 'Banana', 'Watermelon', 'Durian' ]
-const title = 'Which one do you like?'
-
-class ExampleA extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selected: ''
-    }
-    this.handlePress = this.handlePress.bind(this)
-    this.showActionSheet = this.showActionSheet.bind(this)
-  }
-
-  showActionSheet() {
-    this.ActionSheet.show()
-  }
-
-  handlePress(i) {
-    this.setState({
-      selected: i
-    })
-  }
-
+class Demo extends React.Component {
+  showActionSheet = () => {
+    this.ActionSheet.show();
+  };
   render() {
     return (
-      <View style={styles.wrapper}>
-        <Text style={{marginBottom: 20}} >I like {options[this.state.selected]}</Text>
-        <Text style={styles.button} onPress={this.showActionSheet}>Example A</Text>
+      <View>
+        <Text onPress={this.showActionSheet}>Open ActionSheet</Text>
         <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={title}
-          options={options}
-          cancelButtonIndex={CANCEL_INDEX}
-          destructiveButtonIndex={DESTRUCTIVE_INDEX}
-          onPress={this.handlePress}
+          ref={o => (this.ActionSheet = o)}
+          title={"Which one do you like ?"}
+          options={["Apple", "Banana", "cancel"]}
+          cancelButtonIndex={2}
+          destructiveButtonIndex={1}
+          onPress={index => {
+            /* do something */
+          }}
         />
       </View>
-    )
+    );
   }
 }
 ```
 
-
-## Use ActionSheetCustom directly
+### Use ActionSheetCustom directly
 
 so you can customize option and title
 
-```javascript
-import React from 'react'
-import { View, Text, StyleSheet, Modal, ListView } from 'react-native'
-import { ActionSheetCustom as ActionSheet } from 'react-native-actionsheet'
-
-const CANCEL_INDEX = 0
-const DESTRUCTIVE_INDEX = 4
+```js
+import { ActionSheetCustom as ActionSheet } from "react-native-actionsheet";
 
 const options = [
-  'Cancel',
-  'Apple',
-  <Text style={{color: 'yellow'}}>Banana</Text>,
-  'Watermelon',
-  <Text style={{color: 'red'}}>Durian</Text>
-]
+  "Cancel",
+  "Apple",
+  <Text style={{ color: "yellow" }}>Banana</Text>,
+  "Watermelon",
+  <Text style={{ color: "red" }}>Durian</Text>
+];
 
-const title = <Text style={{color: '#000', fontSize: 18}}>Which one do you like?</Text>
-
-class ExampleB extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      selected: ''
-    }
-    this.handlePress = this.handlePress.bind(this)
-    this.showActionSheet = this.showActionSheet.bind(this)
-  }
-
-  showActionSheet() {
-    this.ActionSheet.show()
-  }
-
-  handlePress(i) {
-    this.setState({
-      selected: i
-    })
-  }
-
+class Demo extends React.Component {
+  showActionSheet = () => {
+    this.ActionSheet.show();
+  };
   render() {
     return (
-      <View style={styles.wrapper}>
-        <Text style={{marginBottom: 20}} >I like {options[this.state.selected]}</Text>
-        <Text style={styles.button} onPress={this.showActionSheet}>Example B</Text>
+      <View>
+        <Text onPress={this.showActionSheet}>Open ActionSheet</Text>
         <ActionSheet
-          ref={o => this.ActionSheet = o}
-          title={title}
+          ref={o => (this.ActionSheet = o)}
+          title={
+            <Text style={{ color: "#000", fontSize: 18 }}>
+              Which one do you like?
+            </Text>
+          }
           options={options}
-          cancelButtonIndex={CANCEL_INDEX}
-          destructiveButtonIndex={DESTRUCTIVE_INDEX}
-          onPress={this.handlePress}
+          cancelButtonIndex={0}
+          destructiveButtonIndex={4}
+          onPress={index => {
+            /* do something */
+          }}
         />
       </View>
-    )
+    );
   }
 }
+```
+
+### How to redesign style ?
+
+The style of ActionSheet is defined in [lib/styles.js](https://github.com/beefe/react-native-actionsheet/blob/master/lib/styles.js). We can pass the `styles` prop to cover default style. See [Example](https://github.com/beefe/react-native-actionsheet/blob/master/example/app/ExampleB.js#L48) .
+
+```javascript
+// example
+
+const styles = {
+  titleBox: {
+    background: 'pink'
+  },
+  titleText: {
+    fontSize: 16,
+    color: '#000'
+  }
+}
+
+<ActionSheet
+  ...
+  styles={styles}
+/>
 ```
 
 ## Props
 
+https://github.com/beefe/react-native-actionsheet/blob/master/lib/options.js
+
 <table>
     <tr>
         <th>Prop name</th>
-        <th>Desciption</th>
+        <th>Description</th>
         <th>Type</th>
         <th>Default</th>
     </tr>
     <tr>
         <td>title</td>
+        <td></td>
+        <td>PropTypes.string or PropTypes.element</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>message</td>
         <td></td>
         <td>PropTypes.string or PropTypes.element</td>
         <td></td>
@@ -168,21 +170,9 @@ class ExampleB extends React.Component {
         <td>(index) => {}</td>
     </tr>
     <tr>
-        <td>accessible</td>
-        <td>Only available for Android</td>
-        <td>PropTypes.bool</td>
-        <td>true</td>
-    </tr>
-    <tr>
-        <td>accessibilityLabel</td>
-        <td>Only available for Android</td>
-        <td>PropTypes.string</td>
-        <td>actionSheet</td>
-    </tr>
-    <tr>
-        <td>testID</td>
-        <td>Only available for Android</td>
-        <td>PropTypes.string</td>
-        <td>actionSheet</td>
+        <td>styles</td>
+        <td>only for ActionSheetCustom</td>
+        <td></td>
+        <td>{}</td>
     </tr>
 </table>
